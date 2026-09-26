@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntervAI | Interview Setup &amp; Job Alignment</title>
+    <link rel="stylesheet" href="setup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Ambient Glows -->
+    <div class="glow-orb orb-a"></div>
+    <div class="glow-orb orb-b"></div>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="setup-navbar">
+        <a href="../index.html" class="logo">
+            Interv<span>AI</span>
+        </a>
+        <div class="step-badge">
+            <span class="step-dot"></span> Step 1 of 3: Setup &amp; Target Alignment
+        </div>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+    <main class="setup-page">
+        <div class="setup-container">
+            <!-- Heading -->
+            <div class="setup-heading">
+                <span class="setup-label">INTERVIEW PREPARATION</span>
+                <h1>Configure Your Simulation</h1>
+                <p>Personalize your interview experience. Add your target role, resume, and optional Job Description to train on real-world hiring criteria.</p>
+            </div>
+
+            <!-- ================= FORM ================= -->
+            <form id="setupForm">
+                <!-- TRACK -->
+                <div class="form-section">
+                    <label class="section-title">1. Interview Track</label>
+                    <p class="field-description">Choose the focus of your interview.</p>
+
+                    <div class="track-options">
+                        <label class="track-card selected" id="technicalTrackCard">
+                            <input type="radio" name="track" value="technical" checked>
+                            <div class="track-content">
+                                <div class="track-icon">💻</div>
+                                <div>
+                                    <strong>Technical Track</strong>
+                                    <span>Role-specific architectures, code, debugging, and systems</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="track-card" id="hrTrackCard">
+                            <input type="radio" name="track" value="hr_behavioral">
+                            <div class="track-content">
+                                <div class="track-icon">🤝</div>
+                                <div>
+                                    <strong>HR &amp; Behavioral Track</strong>
+                                    <span>Leadership, conflict resolution, STAR teamwork, and culture fit</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ROLE -->
+                <div class="form-section" id="roleSection">
+                    <label for="role" class="section-title">2. Target Role</label>
+                    <p class="field-description">Which position are you interviewing for?</p>
+                    <div class="select-wrapper">
+                        <select id="role" required>
+                            <option value="">Select a target role</option>
+                            <option value="full_stack_developer">Full-Stack Developer</option>
+                            <option value="ml_engineer">ML Engineer</option>
+                            <option value="data_analyst">Data Analyst</option>
+                            <option value="python_developer">Python Developer</option>
+                            <option value="java_developer">Java Developer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- DIFFICULTY -->
+                <div class="form-section">
+                    <label class="section-title">3. Experience Level &amp; Difficulty</label>
+                    <p class="field-description">Calibrate the interviewer's depth and expectations.</p>
+
+                    <div class="difficulty-options">
+                        <label class="difficulty-card">
+                            <input type="radio" name="difficulty" value="Beginner">
+                            <div class="difficulty-content">
+                                <div class="difficulty-icon">🌱</div>
+                                <div>
+                                    <strong>Beginner</strong>
+                                    <span>Intern &amp; Junior concepts</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="difficulty-card selected">
+                            <input type="radio" name="difficulty" value="Intermediate" checked>
+                            <div class="difficulty-content">
+                                <div class="difficulty-icon">🚀</div>
+                                <div>
+                                    <strong>Intermediate</strong>
+                                    <span>Standard engineering interviews</span>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="difficulty-card">
+                            <input type="radio" name="difficulty" value="Advanced">
+                            <div class="difficulty-content">
+                                <div class="difficulty-icon">🎯</div>
+                                <div>
+                                    <strong>Advanced</strong>
+                                    <span>Deep trade-offs &amp; scale</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- RESUME UPLOAD -->
+                <div class="form-section">
+                    <label class="section-title">4. Upload Resume (PDF)</label>
+                    <p class="field-description">IntervAI will extract your projects and skills to tailor questions around what you've actually built.</p>
+
+                    <label for="resume" class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📄</div>
+                        <strong id="uploadTitle">Drop your PDF resume here, or browse</strong>
+                        <span id="uploadText">Supports standard PDF resumes up to 10MB</span>
+                        <span class="browse-btn">Choose File</span>
+                        <input type="file" id="resume" accept=".pdf">
+                    </label>
+
+                    <div class="file-selected" id="fileSelected">
+                        ✓ Resume analyzed successfully
+                    </div>
+                </div>
+
+                <!-- JOB DESCRIPTION SECTION (NEW) -->
+                <div class="form-section jd-section-box">
+                    <div class="jd-header">
+                        <div>
+                            <label class="section-title">5. Target Job Description <span class="tag-optional">Recommended for Students</span></label>
+                            <p class="field-description">Paste the job description from LinkedIn or company hiring portal. IntervAI aligns question priorities with the exact job requirements!</p>
+                        </div>
+                    </div>
+
+                    <!-- Preset sample student JDs -->
+                    <div class="jd-presets">
+                        <span class="presets-label">⚡ Student Quick-Presets:</span>
+                        <button type="button" class="preset-btn" data-preset="fullstack">Full-Stack Intern</button>
+                        <button type="button" class="preset-btn" data-preset="ml">Junior ML Engineer</button>
+                        <button type="button" class="preset-btn" data-preset="analyst">Data Analyst</button>
+                        <button type="button" class="preset-btn" data-preset="python">Python Developer</button>
+                        <button type="button" class="preset-btn" data-preset="clear">Clear</button>
+                    </div>
+
+                    <textarea id="jobDescription" placeholder="Paste the job description or required skills here (e.g., 'Looking for a developer with React, Node.js, REST APIs, PostgreSQL, and Git experience...')..."></textarea>
+
+                    <!-- Real-Time JD Match Insights -->
+                    <div id="jdMatchInsight" class="jd-match-insight hidden">
+                        <div class="match-insight-header">
+                            <span class="insight-badge" id="matchScoreBadge">⚡ JD Alignment Analysis</span>
+                            <span id="matchPercentage">0% Match</span>
+                        </div>
+                        <div class="insight-skills">
+                            <div class="skill-group">
+                                <span class="group-title">✓ Matched in Resume:</span>
+                                <div id="matchedSkillsList" class="pills-container"></div>
+                            </div>
+                            <div class="skill-group">
+                                <span class="group-title">⚠️ Topics to Brush Up:</span>
+                                <div id="missingSkillsList" class="pills-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STUDENT COACHING SETTINGS -->
+                <div class="student-coaching-box">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="enableHintsCheck" checked>
+                        <span class="checkmark"></span>
+                        <div class="coaching-text">
+                            <strong>💡 Enable In-Interview Student Hints &amp; STAR Blueprints</strong>
+                            <p>Shows expandable answer structures and key recommended topics for each question to build interview confidence.</p>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- AI ENGINE STATUS / CONFIG -->
+                <div class="ai-config-box">
+                    <div class="ai-config-header">
+                        <div class="ai-status-indicator">
+                            <span id="aiStatusDot" class="status-dot"></span>
+                            <strong id="aiStatusTitle">AI Engine: Checking...</strong>
+                        </div>
+                        <button type="button" id="toggleApiKeyBtn" class="toggle-btn">
+                            Configure Gemini Key
+                        </button>
+                    </div>
+                    <div id="apiKeySection" class="api-key-section" style="display: none;">
+                        <p class="api-help-text">
+                            Enter a free Google Gemini API Key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a> for live, adaptive Gemini 2.5 Flash questioning. Standard fallback mode runs offline without a key.
+                        </p>
+                        <div class="api-input-group">
+                            <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy...">
+                            <button type="button" id="saveApiKeyBtn" class="save-key-btn">Save Key</button>
+                        </div>
+                        <span id="apiKeyMsg" class="api-key-msg"></span>
+                    </div>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" class="start-interview-btn" id="startInterviewBtn">
+                    Start Mock Interview <span>→</span>
+                </button>
+
+                <div class="setup-error" id="setupError"></div>
+            </form>
+        </div>
+    </main>
+
+    <script src="../js/api-config.js"></script>
+    <script src="setup.js"></script>
+</body>
+</html>

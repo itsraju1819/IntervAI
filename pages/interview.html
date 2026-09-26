@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntervAI | Live AI Interview Simulation</title>
+    <link rel="stylesheet" href="interview.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Ambient Glow Orbs -->
+    <div class="ambient-glow orb-ai"></div>
+    <div class="ambient-glow orb-cand"></div>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="interview-navbar">
+        <a href="../index.html" class="logo">
+            Interv<span>AI</span>
+        </a>
+
+        <div class="interview-info">
+            <span id="roleDisplay">Software Developer</span>
+            <span class="separator">|</span>
+            <span id="difficultyDisplay">Intermediate</span>
+            <span id="jdTagBadge" class="jd-mini-tag hidden">🎯 Target JD Active</span>
+        </div>
+
+        <div class="question-counter">
+            Question <strong id="questionNumber">1</strong> / 5
+        </div>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+    <main class="interview-page">
+        <div class="interview-container">
+
+            <!-- ================= PROGRESS & PACING BAR ================= -->
+            <div class="progress-section">
+                <div class="progress-meta">
+                    <div class="progress-left">
+                        <span>Interview Progress:</span>
+                        <strong id="progressPercentage">20%</strong>
+                    </div>
+                    <div class="progress-right" id="pacingContainer">
+                        <span class="timer-icon">⏱️</span>
+                        <span id="pacingTimer">00:00</span>
+                        <span id="pacingStatus" class="pacing-pill sweet-spot">Pacing: Ready</span>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
+                </div>
+            </div>
+
+            <!-- ================= INTERVIEW GRID ================= -->
+            <div class="interview-grid">
+
+                <!-- ================= AI INTERVIEWER PANEL ================= -->
+                <section class="ai-panel">
+                    <div class="panel-label">
+                        <span>AI INTERVIEWER</span>
+                        <span class="live-pill"><span class="blink-dot"></span> LIVE</span>
+                    </div>
+
+                    <div class="ai-profile">
+                        <div class="ai-avatar-large" id="aiAvatarIcon">
+                            <span>AI</span>
+                            <div class="avatar-soundwaves" id="avatarWave">
+                                <i></i><i></i><i></i><i></i><i></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2>IntervAI Mentor</h2>
+                            <div class="ai-status" id="backendStatus">
+                                <span class="status-indicator"></span>
+                                <span>Interviewer is ready</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question Box -->
+                    <div class="question-section">
+                        <div class="question-tag-row">
+                            <span class="question-label" id="questionTopic">QUESTION 1 • INTRODUCTION</span>
+                            <span class="badge-source" id="questionSourceTag">Gemini AI</span>
+                        </div>
+                        <h1 id="questionText">
+                            Tell me about yourself and your technical background.
+                        </h1>
+                    </div>
+
+                    <!-- Audio Question Controls -->
+                    <div class="audio-controls">
+                        <button class="play-question" id="playQuestionBtn">
+                            <span class="play-icon">▶</span>
+                            <span>Listen to Question (TTS)</span>
+                        </button>
+                    </div>
+
+                    <!-- STUDENT HINT & STAR BLUEPRINT DRAWER -->
+                    <div class="student-hint-card" id="studentHintDrawer">
+                        <div class="hint-header" id="hintToggleBtn">
+                            <div class="hint-title">
+                                <span>💡</span>
+                                <strong>Need a Hint? (STAR Framework Blueprint)</strong>
+                            </div>
+                            <span class="toggle-icon" id="hintToggleIcon">▼</span>
+                        </div>
+                        <div class="hint-content" id="hintContentBox" style="display: none;">
+                            <div class="blueprint-box">
+                                <span class="blueprint-label">Answer Structure:</span>
+                                <p id="hintBlueprintText">
+                                    • Situation: Briefly set the context<br>
+                                    • Task: What challenge needed solving?<br>
+                                    • Action: What specific technical decisions did you make?<br>
+                                    • Result: What was the measurable impact?
+                                </p>
+                            </div>
+                            <div class="suggested-keywords" id="suggestedKeywordsSection">
+                                <span class="keywords-label">Recommended Keywords to mention:</span>
+                                <div id="keywordsPillList" class="keywords-list">
+                                    <span class="keyword-pill">Clean Architecture</span>
+                                    <span class="keyword-pill">Problem Solving</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= ANSWER RESPONSE PANEL ================= -->
+                <section class="answer-panel">
+                    <div class="panel-header-row">
+                        <div class="panel-label">YOUR RESPONSE</div>
+                        <div class="answer-actions-top">
+                            <button type="button" class="btn-clear" id="clearAnswerBtn" title="Reset your response">
+                                ↺ Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Mode Tabs -->
+                    <div class="answer-tabs">
+                        <button class="answer-tab active" id="textTab">
+                            ⌨️ Type Answer
+                        </button>
+                        <button class="answer-tab" id="voiceTab">
+                            🎙️ Voice Answer
+                        </button>
+                    </div>
+
+                    <!-- TEXT RESPONSE -->
+                    <div class="text-answer-area" id="textAnswerArea">
+                        <textarea id="answerInput" placeholder="Speak or type your answer here... Use the STAR method to structure your points!"></textarea>
+                        
+                        <div class="answer-footer">
+                            <div class="footer-stats">
+                                <span id="wordCount">0 words</span>
+                                <span class="word-gauge" id="wordGauge">Too brief</span>
+                            </div>
+                            <span class="footer-tip">Take your time • Quality over speed</span>
+                        </div>
+                    </div>
+
+                    <!-- VOICE RESPONSE -->
+                    <div class="voice-answer-area hidden" id="voiceAnswerArea">
+                        <div class="microphone-wrapper">
+                            <div class="microphone-circle pulse-mic" id="micCircle">
+                                <span>🎙</span>
+                            </div>
+                            <!-- Live soundwave visualizer -->
+                            <div class="live-soundwave hidden" id="liveSoundwave">
+                                <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+
+                        <h3 id="recordingStatus">Microphone ready</h3>
+                        <p id="recordingSubtext">Click to speak naturally — speech will convert to text automatically.</p>
+
+                        <button class="record-button" id="recordButton">
+                            🎙 Start Recording
+                        </button>
+
+                        <div class="transcript" id="transcript">
+                            Your spoken transcript will appear here in real-time...
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT ANSWER -->
+                    <button class="submit-answer glow-btn" id="submitAnswer">
+                        Submit Answer <span>→</span>
+                    </button>
+                </section>
+
+            </div>
+
+            <!-- COACHING TIP BANNER -->
+            <div class="interview-tip">
+                <span class="tip-icon">💡</span>
+                <div>
+                    <strong>Interviewer Coaching Tip:</strong>
+                    <p id="interviewTip">
+                        Structure your response with clear context, specific actions taken, and the resulting outcome.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../js/api-config.js"></script>
+    <script src="interview.js"></script>
+</body>
+</html>

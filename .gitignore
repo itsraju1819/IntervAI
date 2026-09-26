@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment Secrets - Never commit API keys
+.env
+*.env.local
+!backend/.env.example
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

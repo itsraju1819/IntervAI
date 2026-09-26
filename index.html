@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IntervAI | Next-Gen AI Interview Simulator & Student Coach</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Background Ambient Glow Orbs -->
+    <div class="ambient-glow orb-1"></div>
+    <div class="ambient-glow orb-2"></div>
+    <div class="ambient-glow orb-3"></div>
+
+    <!-- ================= HEADER ================= -->
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            Interv<span>AI</span>
+            <span class="version-pill">v2.0</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#student-tools">Student Coach</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="pages/setup.html" class="nav-button" id="navStartBtn">
+                Start Interview <span>→</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <div class="badge animate-pop">
+                    <span class="badge-dot"></span>
+                    <span>AI-POWERED INTERVIEW SIMULATOR &amp; STUDENT COACH</span>
+                </div>
+
+                <h1 class="hero-title">
+                    Master every interview. <br>
+                    <span class="gradient-text">Practice with Adaptive AI.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Empowering students and job seekers to land their dream offers. 
+                    Practice with realistic AI interviewers tailored to your 
+                    <strong>Target Role</strong>, <strong>Uploaded Resume</strong>, and <strong>Job Description</strong>.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="pages/setup.html" class="primary-btn glow-btn" id="startBtn">
+                        Start Mock Interview
+                        <span class="arrow-icon">→</span>
+                    </a>
+                    <a href="#student-tools" class="secondary-btn glass-btn">
+                        Explore Student Tools
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Interview Confidence</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">STAR</div>
+                        <div class="stat-label">Structured Guidance</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">JD Match</div>
+                        <div class="stat-label">Tailored Questions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERVIEW PREVIEW WINDOW -->
+            <div class="hero-visual">
+                <div class="interview-window glass-card float-card">
+                    <div class="window-header">
+                        <div class="window-title">
+                            <span class="online-dot pulse"></span>
+                            <span>IntervAI Mentor</span>
+                            <span class="badge-small">Gemini 2.5 Flash</span>
+                        </div>
+                        <span class="question-count">Question 1 / 5</span>
+                    </div>
+
+                    <div class="interviewer">
+                        <div class="ai-avatar pulse-avatar">
+                            AI
+                        </div>
+                        <div class="interviewer-text">
+                            <span class="small-label">LIVE AI INTERVIEWER</span>
+                            <p>"Welcome! Walk me through an end-to-end full-stack project you engineered, highlighting your architectural trade-offs."</p>
+                        </div>
+                    </div>
+
+                    <div class="student-helper-banner">
+                        <span class="helper-icon">💡</span>
+                        <div class="helper-text">
+                            <strong>Student Hint (STAR Framework):</strong>
+                            <span>Situation -> Task -> Action -> Measurable Result</span>
+                        </div>
+                    </div>
+
+                    <div class="response-area">
+                        <div class="response-placeholder">
+                            <span class="waveform-anim">
+                                <span></span><span></span><span></span><span></span><span></span>
+                            </span>
+                            <span>Listening or typing your answer...</span>
+                        </div>
+                        <button class="mic-button pulse-btn" aria-label="Microphone">
+                            🎙
+                        </button>
+                    </div>
+
+                    <div class="window-footer">
+                        <div class="progress-info">
+                            <span>Interview Progress</span>
+                            <strong class="highlight-cyan">20% Completed</strong>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= STUDENT TOOLS ================= -->
+        <section class="student-section" id="student-tools">
+            <div class="section-heading">
+                <span class="section-label">STUDENT SUPERPOWERS</span>
+                <h2>Built specifically to make <span>interviews easy.</span></h2>
+                <p>Never freeze during an interview again. IntervAI equips you with real-time coaching, hints, and job alignment.</p>
+            </div>
+
+            <div class="student-grid">
+                <div class="tool-card hover-lift">
+                    <div class="tool-icon gradient-bg-1">🎯</div>
+                    <h3>Target Job Description Matching</h3>
+                    <p>Paste any LinkedIn or job board JD. IntervAI extracts exact technical competencies and cross-references them against your resume.</p>
+                    <span class="tool-tag">JD Match Engine</span>
+                </div>
+
+                <div class="tool-card hover-lift">
+                    <div class="tool-icon gradient-bg-2">💡</div>
+                    <h3>STAR Framework Answer Blueprints</h3>
+                    <p>Stuck on an answer? Access structured hints with situation, task, action, and outcome guidelines for every single question.</p>
+                    <span class="tool-tag">Confidence Booster</span>
+                </div>
+
+                <div class="tool-card hover-lift">
+                    <div class="tool-icon gradient-bg-3">🎙</div>
+                    <h3>Voice Waves &amp; Pacing Coach</h3>
+                    <p>Practice speaking out loud with real-time speech-to-text recognition, live speech waveforms, and pacing guidance.</p>
+                    <span class="tool-tag">Voice &amp; Audio</span>
+                </div>
+
+                <div class="tool-card hover-lift">
+                    <div class="tool-icon gradient-bg-4">📊</div>
+                    <h3>ATS &amp; Keyword Gap Report</h3>
+                    <p>Receive comprehensive scorecards with technical accuracy, communication clarity, problem-solving, and missing JD keywords.</p>
+                    <span class="tool-tag">Detailed Scorecard</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HOW IT WORKS ================= -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="section-heading">
+                <span class="section-label">HOW IT WORKS</span>
+                <h2>4 simple steps to <span>mastery.</span></h2>
+            </div>
+
+            <div class="steps">
+                <div class="step-card hover-lift">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">📄</div>
+                    <h3>Upload &amp; Set Target</h3>
+                    <p>Pick your role, upload your PDF resume, and optionally paste your target Job Description.</p>
+                </div>
+
+                <div class="step-card hover-lift">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">🤖</div>
+                    <h3>Meet Adaptive AI</h3>
+                    <p>Answer questions dynamically generated and tailored to your level, resume, and JD.</p>
+                </div>
+
+                <div class="step-card hover-lift">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">🎙</div>
+                    <h3>Use Student Hints</h3>
+                    <p>Leverage the STAR framework tips, live timers, and voice responses to craft strong answers.</p>
+                </div>
+
+                <div class="step-card hover-lift">
+                    <div class="step-number">04</div>
+                    <div class="step-icon">📈</div>
+                    <h3>Review Scorecard</h3>
+                    <p>Inspect competency scores, strengths, growth areas, and keyword recommendations.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FEATURES ================= -->
+        <section class="features" id="features">
+            <div class="section-heading">
+                <span class="section-label">CORE FEATURES</span>
+                <h2>Engineered for <span>excellence.</span></h2>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">✨</div>
+                    <h3>Gemini 2.5 Flash AI</h3>
+                    <p>Ultra-low latency, intelligent adaptive conversation powered by state-of-the-art Google GenAI models.</p>
+                </div>
+
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">📑</div>
+                    <h3>Resume Parser</h3>
+                    <p>Instant PDF parsing that detects your core technical skills and weaves your actual projects into questions.</p>
+                </div>
+
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Zero-Failure Fallback</h3>
+                    <p>Full 5-question curated sequential banks for every role so you can practice even offline without interruption.</p>
+                </div>
+
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">🖨️</div>
+                    <h3>Print &amp; Share Report</h3>
+                    <p>Export a clean, printable PDF performance report complete with question-by-question feedback.</p>
+                </div>
+
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Multi-Track Support</h3>
+                    <p>Dedicated tracks for Technical roles (Full-Stack, ML, Data Analyst, Python, Java) and HR/Behavioral interviews.</p>
+                </div>
+
+                <div class="feature-card hover-lift">
+                    <div class="feature-icon">🎉</div>
+                    <h3>Celebration &amp; Growth</h3>
+                    <p>Positive reinforcement with confetti animations, clear ratings, and actionable steps to raise your hiring bar.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CTA ================= -->
+        <section class="cta" id="about">
+            <div class="cta-content glass-card">
+                <span class="section-label">READY TO LEVEL UP?</span>
+                <h2>Start your mock interview now.</h2>
+                <p>Turn interview anxiety into your greatest competitive advantage.</p>
+                <a href="pages/setup.html" class="primary-btn glow-btn" id="ctaStartBtn">
+                    Start Your Free Mock Interview <span>→</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                Interv<span>AI</span>
+            </div>
+            <p>AI-powered adaptive mock interviews engineered to help students succeed.</p>
+            <div class="footer-bottom">
+                © 2026 IntervAI. Crafted with ❤️ for ambitious students and developers.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
