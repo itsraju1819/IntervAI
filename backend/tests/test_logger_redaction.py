@@ -11,7 +11,7 @@ class TestSensitiveDataRedaction:
     """Verifies that credentials, tokens, API keys, and PII are redacted from logs."""
 
     def test_redacts_google_api_key(self):
-        secret_log = "Initializing Gemini with key: ***REMOVED***"
+        secret_log = "Initializing Gemini with key: AIzaSy_MOCK_TEST_KEY_DO_NOT_USE_12345"
         redacted = SensitiveDataFilter.redact(secret_log)
         assert "AIzaSy" not in redacted
         assert "[REDACTED_API_KEY]" in redacted
@@ -59,7 +59,7 @@ class TestSensitiveDataRedaction:
         test_logger.addHandler(handler)
         test_logger.propagate = False
 
-        test_logger.info("Connecting with key=***REMOVED*** and email: user@test.com")
+        test_logger.info("Connecting with key=AIzaSy_MOCK_TEST_KEY_DO_NOT_USE_12345 and email: user@test.com")
         handler.flush()
 
         output = stream.getvalue()

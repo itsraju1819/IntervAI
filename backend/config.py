@@ -9,17 +9,21 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load backend/.env regardless of the current working directory
-_ENV_PATH = Path(__file__).resolve().parent / ".env"
-load_dotenv(dotenv_path=_ENV_PATH, override=True)
+# Load backend/.env and root .env regardless of the current working directory
+_BACKEND_ENV_PATH = Path(__file__).resolve().parent / ".env"
+_ROOT_ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+if _ROOT_ENV_PATH.exists():
+    load_dotenv(dotenv_path=_ROOT_ENV_PATH, override=True)
+if _BACKEND_ENV_PATH.exists():
+    load_dotenv(dotenv_path=_BACKEND_ENV_PATH, override=True)
 
 
 class Settings:
     # --- Gemini AI ------------------------------------------------------
     @property
     def GEMINI_API_KEY(self) -> str | None:
-        key = (os.getenv("GEMINI_API_KEY") or "").strip()
-        if not key or key == "your_gemini_api_key_here":
+        key = (os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY") or "").strip()
+        if not key or key in ("your_gemini_api_key_here", "INSERT_NEW_KEY_HERE"):
             return None
         return key
 

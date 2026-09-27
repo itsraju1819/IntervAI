@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 # Redaction patterns for sensitive information
 PATTERNS = [
     # Google AI / Firebase API Keys
-    (re.compile(r"AIza[0-9A-Za-z-_]{35}"), "[REDACTED_API_KEY]"),
+    (re.compile(r"AIza[0-9A-Za-z-_]{30,40}"), "[REDACTED_API_KEY]"),
     # OpenAI / generic sk- style secret keys
     (re.compile(r"sk-[a-zA-Z0-9_\-]{16,}"), "[REDACTED_SECRET_KEY]"),
     # Bearer tokens
