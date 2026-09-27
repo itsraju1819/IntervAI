@@ -65,5 +65,16 @@ class Settings:
     def gemini_configured(self) -> bool:
         return self.GEMINI_API_KEY is not None
 
+    @property
+    def ENVIRONMENT(self) -> str:
+        return (os.getenv("ENVIRONMENT") or "development").strip()
+
+    @property
+    def RATE_LIMIT_PER_MINUTE(self) -> int:
+        try:
+            return int(os.getenv("RATE_LIMIT_PER_MINUTE", "60"))
+        except ValueError:
+            return 60
+
 
 settings = Settings()

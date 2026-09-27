@@ -416,7 +416,7 @@ function loadQuestion() {
 
     // Update hints
     if (hintBlueprintText) {
-        hintBlueprintText.innerHTML = (current.hint || "• Use the STAR method: Situation, Task, Action, Result.")
+        hintBlueprintText.innerHTML = escapeHtml(current.hint || "• Use the STAR method: Situation, Task, Action, Result.")
             .replace(/\n/g, "<br>");
     }
 

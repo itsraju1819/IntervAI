@@ -1,27 +1,73 @@
-# Python
+# ========================================
+# IntervAI - Git Ignore Configuration
+# ========================================
+
+# Environment Secrets - NEVER COMMIT SECRETS
+.env
+.env.*
+*.env
+*.env.local
+!backend/.env.example
+secrets.json
+*.pem
+*.key
+*.cert
+*.pfx
+
+# Python Runtime & Bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
+.installed.cfg
+*.egg
 
 # Virtual Environments
 .venv/
 venv/
 ENV/
 env/
+env.bak/
+venv.bak/
 
-# Environment Secrets - Never commit API keys
-.env
-*.env.local
-!backend/.env.example
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
 
-# OS / Editor
+# Databases & Runtime Data
+*.db
+*.sqlite3
+
+# Logs & Temporary Files
+*.log
+logs/
+*.tmp
+scratch/
+
+# OS & Editor Specific
 .DS_Store
 Thumbs.db
+ehthumbs.db
 .vscode/
+!.vscode/settings.json.example
 .idea/
-*.log
+*.sublime-workspace
+*.sublime-project

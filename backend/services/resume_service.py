@@ -114,7 +114,7 @@ def heuristic_extract_profile(raw_text: str, matched_skills: list[str]) -> dict[
 
     # Heuristic project detection
     projects = []
-    lines = [l.strip() for l in raw_text.splitlines() if l.strip()]
+    lines = [line.strip() for line in raw_text.splitlines() if line.strip()]
     project_headers = []
     for line in lines:
         if any(w in line.lower() for w in ["project:", "built", "developed", "created", "designed"]) and len(line) < 100:

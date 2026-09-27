@@ -1,17 +1,39 @@
-# Secrets — never commit
-.env
+# ========================================
+# IntervAI Backend - Git Ignore Rules
+# ========================================
 
-# Python
+# Secrets & Environment variables
+.env
+.env.*
+*.env
+!backend/.env.example
+secrets.json
+*.key
+*.pem
+
+# Python artifacts
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 .venv/
 venv/
 env/
 
-# Database (created at runtime, Phase 8+)
+# Database files
 *.db
 *.sqlite3
 
-# OS / editor
+# Test & Coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# Editor & OS files
 .DS_Store
 .vscode/
+.idea/

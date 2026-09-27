@@ -7,15 +7,12 @@ speech analytics aggregation, and Job Description keyword alignment.
 """
 
 import logging
-import re
 from typing import Any
 
 try:
-    from roles_config import get_role_profile
     from services.gemini_service import GeminiServiceError, gemini_service
     from services.jd_service import analyze_jd_and_resume
 except ImportError:
-    from backend.roles_config import get_role_profile
     from backend.services.gemini_service import GeminiServiceError, gemini_service
     from backend.services.jd_service import analyze_jd_and_resume
 
