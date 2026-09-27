@@ -12,7 +12,10 @@ from google import genai
 from google.genai import types
 from google.genai.errors import APIError
 
-from config import settings
+try:
+    from config import settings
+except ImportError:
+    from backend.config import settings
 
 logger = logging.getLogger("intervai.gemini")
 

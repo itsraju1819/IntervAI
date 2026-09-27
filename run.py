@@ -51,7 +51,7 @@ def main():
     if settings.gemini_configured:
         print(f"[*] Gemini AI      : ENABLED ({settings.GEMINI_MODEL})")
     else:
-        print(f"[*] Gemini AI      : STANDARD MODE (Add key in web UI or .env for live AI)")
+        print(f"[*] Gemini AI      : STANDARD MODE (Configure GEMINI_API_KEY in .env for live AI)")
     print(f"[*] Application URL: http://localhost:8000")
     print("=" * 65)
 

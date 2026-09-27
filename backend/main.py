@@ -88,8 +88,8 @@ def gemini_test(payload: GeminiTestRequest) -> GeminiTestResponse:
         raise HTTPException(
             status_code=503,
             detail=(
-                "GEMINI_API_KEY is not set on the server. Add it in "
-                "backend/.env or via the web settings interface."
+                "GEMINI_API_KEY is not set on the server. Configure GEMINI_API_KEY "
+                "in the server environment or backend/.env."
             ),
         )
 

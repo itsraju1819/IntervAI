@@ -8,7 +8,10 @@ Resume vs Job Description match score to empower students.
 import logging
 import re
 from typing import Any
-from services.resume_service import COMMON_SKILLS
+try:
+    from services.resume_service import COMMON_SKILLS
+except ImportError:
+    from backend.services.resume_service import COMMON_SKILLS
 
 logger = logging.getLogger("intervai.jd")
 

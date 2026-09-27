@@ -194,26 +194,14 @@
                     </label>
                 </div>
 
-                <!-- AI ENGINE STATUS / CONFIG -->
+                <!-- AI ENGINE STATUS -->
                 <div class="ai-config-box">
                     <div class="ai-config-header">
                         <div class="ai-status-indicator">
                             <span id="aiStatusDot" class="status-dot"></span>
                             <strong id="aiStatusTitle">AI Engine: Checking...</strong>
                         </div>
-                        <button type="button" id="toggleApiKeyBtn" class="toggle-btn">
-                            Configure Gemini Key
-                        </button>
-                    </div>
-                    <div id="apiKeySection" class="api-key-section" style="display: none;">
-                        <p class="api-help-text">
-                            Enter a free Google Gemini API Key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a> for live, adaptive Gemini 2.5 Flash questioning. Standard fallback mode runs offline without a key.
-                        </p>
-                        <div class="api-input-group">
-                            <input type="password" id="geminiApiKeyInput" placeholder="AIzaSy...">
-                            <button type="button" id="saveApiKeyBtn" class="save-key-btn">Save Key</button>
-                        </div>
-                        <span id="apiKeyMsg" class="api-key-msg"></span>
+                        <span id="aiStatusBadge" class="pill-matched">Server-Side Environment</span>
                     </div>
                 </div>
 

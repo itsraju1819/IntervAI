@@ -237,12 +237,16 @@ let questions = [...ROLE_FALLBACK_BANKS[bankKey]];
 
 // State
 let currentQuestion = 0;
-const totalQuestionsCount = 5;
+const totalQuestionsCount = parseInt(sessionStorage.getItem("intervaiTotalQuestions") || "5", 10);
 let answers = [];
+let turnSpeechMetrics = [];
 let isRecording = false;
 let recognition = null;
 let speechSeconds = 0;
 let timerInterval = null;
+let turnStartTime = Date.now();
+let recordingStartTime = null;
+let totalVoiceDuration = 0;
 
 // DOM Elements
 const questionText = document.getElementById("questionText");
@@ -385,12 +389,30 @@ if (hintToggleBtn) {
 // ===============================
 
 function loadQuestion() {
+    turnStartTime = Date.now();
+    recordingStartTime = null;
+    totalVoiceDuration = 0;
+
     const current = questions[currentQuestion];
     questionText.textContent = current.question;
     interviewTip.textContent = current.tip;
     questionNumber.textContent = currentQuestion + 1;
-    if (questionTopic) questionTopic.textContent = `QUESTION ${currentQuestion + 1} • ${(current.topic || "COMPETENCY").toUpperCase()}`;
-    if (questionSourceTag) questionSourceTag.textContent = current.source === "gemini" ? "✨ Gemini Adaptive AI" : "Standard Role Bank";
+    const totalQEl = document.getElementById("totalQuestionsDisplay");
+    if (totalQEl) totalQEl.textContent = totalQuestionsCount;
+
+    const topicLabel = (current.topic || "COMPETENCY").toUpperCase();
+    if (questionTopic) {
+        if (current.is_followup) {
+            questionTopic.textContent = `QUESTION ${currentQuestion + 1} • ${topicLabel} ⚡ [CROSS-EXAMINATION PROBE]`;
+            questionTopic.style.color = "#ea580c";
+        } else {
+            questionTopic.textContent = `QUESTION ${currentQuestion + 1} • ${topicLabel}`;
+            questionTopic.style.color = "";
+        }
+    }
+    if (questionSourceTag) {
+        questionSourceTag.textContent = current.source === "gemini" ? "✨ Gemini Adaptive AI" : "Standard Role Bank";
+    }
 
     // Update hints
     if (hintBlueprintText) {
@@ -528,6 +550,7 @@ function setupSpeechRecognition() {
 
     rec.onstart = function () {
         isRecording = true;
+        recordingStartTime = Date.now();
         recordButton.classList.add("recording");
         recordButton.textContent = "⏹ Stop Recording";
         recordingStatus.textContent = "Listening to your answer...";
@@ -561,6 +584,10 @@ function setupSpeechRecognition() {
     };
 
     rec.onend = function () {
+        if (recordingStartTime) {
+            totalVoiceDuration += (Date.now() - recordingStartTime) / 1000;
+            recordingStartTime = null;
+        }
         isRecording = false;
         recordButton.classList.remove("recording");
         recordButton.textContent = "🎙 Start Recording";
@@ -570,6 +597,10 @@ function setupSpeechRecognition() {
     };
 
     rec.onerror = function () {
+        if (recordingStartTime) {
+            totalVoiceDuration += (Date.now() - recordingStartTime) / 1000;
+            recordingStartTime = null;
+        }
         isRecording = false;
         recordButton.classList.remove("recording");
         recordButton.textContent = "🎙 Start Recording";
@@ -614,11 +645,36 @@ submitAnswer.addEventListener("click", async function () {
 
     if (isRecording && recognition) {
         recognition.stop();
+        if (recordingStartTime) {
+            totalVoiceDuration += (Date.now() - recordingStartTime) / 1000;
+            recordingStartTime = null;
+        }
     }
+
+    // Compute speech delivery metrics for this turn
+    const durationSeconds = totalVoiceDuration > 1
+        ? Math.round(totalVoiceDuration * 10) / 10
+        : Math.round(Math.max(5, (Date.now() - turnStartTime) / 1000) * 10) / 10;
+
+    const words = answer.trim().split(/\s+/).filter(Boolean);
+    const totalWords = words.length;
+    const wpm = durationSeconds > 0 ? Math.round((totalWords / durationSeconds) * 60) : 0;
+    const fillerMatches = answer.match(/\b(um|uh|like|you know|actually|basically|sort of)\b/gi) || [];
+    const fillerCount = fillerMatches.length;
+
+    const deliveryMetrics = {
+        duration_seconds: durationSeconds,
+        total_words: totalWords,
+        wpm: wpm,
+        filler_count: fillerCount,
+        filler_words_detected: fillerMatches.map((m) => m.toLowerCase()),
+    };
+    turnSpeechMetrics.push(deliveryMetrics);
 
     const currentQA = {
         question: questions[currentQuestion].question,
         answer: answer,
+        delivery_metrics: deliveryMetrics,
     };
 
     answers.push(currentQA);
@@ -632,7 +688,7 @@ submitAnswer.addEventListener("click", async function () {
     // Otherwise fetch next adaptive question
     const nextQNum = currentQuestion + 2;
     submitAnswer.disabled = true;
-    submitAnswer.textContent = `IntervAI is generating Question ${nextQNum}...`;
+    submitAnswer.textContent = `IntervAI is evaluating & generating Question ${nextQNum}...`;
 
     try {
         if (intervaiSessionId) {
@@ -645,6 +701,7 @@ submitAnswer.addEventListener("click", async function () {
                     last_question: currentQA.question,
                     last_answer: currentQA.answer,
                     job_description: savedJd || null,
+                    delivery_metrics: deliveryMetrics,
                 }),
             });
 
@@ -657,6 +714,7 @@ submitAnswer.addEventListener("click", async function () {
                     hint: nextData.question.hint,
                     sample_keywords: nextData.question.sample_keywords,
                     source: nextData.source,
+                    is_followup: nextData.is_followup || false,
                 };
             }
         }
@@ -696,6 +754,7 @@ async function finishInterview() {
         difficulty: difficulty,
         answers: answers,
         job_description: savedJd || null,
+        speech_metrics: turnSpeechMetrics,
     };
 
     try {
@@ -720,35 +779,101 @@ async function finishInterview() {
 }
 
 function createLocalEvaluation(payload) {
-    const defaultScore = 85;
+    const roleKeywords = [
+        "code", "data", "api", "database", "system", "performance", "testing",
+        "frontend", "backend", "python", "java", "sql", "model", "pipeline",
+        "debug", "architecture", "scale", "team", "communication", "lead", "action"
+    ];
+    const scores = [];
+    const qaEvals = payload.answers.map((qa, i) => {
+        const ans = (qa.answer || "").trim();
+        const words = ans ? ans.split(/\s+/).filter(Boolean).length : 0;
+        const lower = ans.toLowerCase();
+        let score = 25;
+        let feedback = "No answer was provided. Practice answering aloud with real examples.";
+        if (words === 0) {
+            score = 25;
+            feedback = "No answer was provided. Practice answering aloud with real examples.";
+        } else if (words < 15) {
+            score = 55;
+            feedback = "Answer was too brief. Elaborate with specific details and context.";
+        } else if (words < 40) {
+            const matches = roleKeywords.filter((k) => lower.includes(k)).length;
+            score = Math.min(80, 65 + matches * 3);
+            feedback = "Good foundation. Expand on your specific methodology, trade-offs, and results.";
+        } else if (words < 100) {
+            const matches = roleKeywords.filter((k) => lower.includes(k)).length;
+            score = Math.min(92, 75 + matches * 2);
+            feedback = "Strong and well-articulated response with relevant details and logical flow.";
+        } else {
+            const matches = roleKeywords.filter((k) => lower.includes(k)).length;
+            score = Math.min(95, 80 + matches * 2);
+            feedback = "Comprehensive and thorough response demonstrating clear subject familiarity.";
+        }
+        scores.push(score);
+        return {
+            question: qa.question || `Question ${i + 1}`,
+            score: score,
+            feedback: feedback,
+            delivery_metrics: qa.delivery_metrics || null,
+        };
+    });
+
+    const avgScore = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 55;
+    let rating = "Needs Preparation";
+    if (avgScore >= 85) rating = "Interview Ready";
+    else if (avgScore >= 75) rating = "Very Good";
+    else if (avgScore >= 65) rating = "Competent";
+    else if (avgScore >= 50) rating = "Developing";
+
+    const validWpms = turnSpeechMetrics.map((m) => m.wpm).filter((w) => w > 0);
+    const avgWpm = validWpms.length ? Math.round(validWpms.reduce((a, b) => a + b, 0) / validWpms.length) : null;
+    const totalFillers = turnSpeechMetrics.reduce((sum, m) => sum + (m.filler_count || 0), 0);
+
     const localEval = {
-        overall_score: defaultScore,
-        rating: "Very Good",
-        summary: `You completed your ${payload.role_name} interview (${payload.difficulty} level). Your responses showed solid technical understanding, structured reasoning, and professional communication.`,
+        is_fallback: true,
+        evaluation_status: "evaluator_unreachable",
+        message: "AI evaluation service could not be reached. Local heuristic evaluation applied.",
+        overall_score: avgScore,
+        rating: rating,
+        summary: `You completed your ${payload.role_name} interview (${payload.difficulty} level). AI evaluation service could not be reached. Local heuristic evaluation applied.`,
         category_scores: {
-            technical_accuracy: 85,
-            clarity_communication: 86,
-            problem_solving: 84,
-            structure: 85,
+            technical_accuracy: Math.min(100, Math.max(40, avgScore + 1)),
+            clarity_communication: Math.min(100, Math.max(45, avgScore + 2)),
+            problem_solving: Math.min(100, Math.max(40, avgScore - 2)),
+            structure: Math.min(100, Math.max(40, avgScore - 1)),
         },
         strengths: [
-            `Demonstrated practical comprehension of ${payload.role_name} core responsibilities`,
-            "Communicated clearly with structured and relevant answers",
-            "Maintained composure and answered with logical reasoning",
+            `Demonstrated foundational knowledge for ${payload.role_name}`,
+            "Directly answered interview questions with relevant context",
+            "Maintained consistent engagement across the session",
         ],
         improvements: [
-            "Provide more measurable, quantifiable metrics (e.g. latency, throughput, scale) when describing results",
-            "Structure situational examples using the STAR framework (Situation, Task, Action, Result)",
+            "Use the STAR framework (Situation, Task, Action, Result) for structured storytelling",
+            "Quantify your accomplishments (e.g. latency, scale, performance improvements)",
+            "Address potential trade-offs and edge cases explicitly",
         ],
-        question_evaluations: payload.answers.map((a, i) => ({
-            question: a.question || `Question ${i + 1}`,
-            score: 84 + (i % 3) * 3,
-            feedback: "Well-reasoned response that directly tackled the question with good clarity.",
-        })),
-        jd_match_score: payload.job_description ? 80 : null,
-        matched_keywords: payload.job_description ? ["architecture", "api", "database", "testing"] : null,
+        question_evaluations: qaEvals,
+        star_breakdown: {
+            situation: true,
+            task: true,
+            action: false,
+            result: false,
+            feedback: "Answers showed good technical context; elaborate further on your exact Actions and measurable Results.",
+        },
+        weakest_answer_rewrite: {
+            question: payload.answers[0]?.question || "Technical Question",
+            original_answer: payload.answers[0]?.answer || "[No answer provided]",
+            critique: "Response was brief and lacked concrete STAR structure, missing measurable metrics and outcomes.",
+            rewritten_answer: `[Situation] In my ${payload.role_name} project, our system needed to handle increased request volume without latency spikes.\n[Task] My goal was to restructure backend queries and implement reliable response caching.\n[Action] I introduced asynchronous handlers, indexed high-traffic columns in the database, and integrated Redis caching for read queries.\n[Result] This improved response times by 35% and maintained 99.9% uptime under peak load testing.`,
+        },
+        average_wpm: avgWpm,
+        total_filler_words: totalFillers,
+        speech_delivery_summary: avgWpm ? `Average speaking cadence: ${avgWpm} WPM with ${totalFillers} total filler words detected.` : null,
+        jd_match_score: payload.job_description ? 75 : null,
+        matched_keywords: payload.job_description ? ["api", "database", "testing", "git"] : null,
         missing_keywords: payload.job_description ? ["ci/cd", "caching"] : null,
-        source: "fallback",
+        source: "heuristic_fallback",
     };
     sessionStorage.setItem("intervaiEvaluation", JSON.stringify(localEval));
 }

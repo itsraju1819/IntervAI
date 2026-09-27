@@ -556,11 +556,288 @@ body {
     }
 }
 
+/* ================= DIAGNOSTIC FALLBACK BANNER ================= */
+.diagnostic-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    color: #92400e;
+}
+
+.diagnostic-icon {
+    font-size: 26px;
+}
+
+.diagnostic-banner strong {
+    font-size: 15px;
+    display: block;
+    margin-bottom: 3px;
+    color: #b45309;
+}
+
+.diagnostic-banner p {
+    font-size: 13px;
+    color: #78350f;
+    line-height: 1.4;
+}
+
+/* ================= SPEECH ANALYTICS ================= */
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.delivery-status-pill {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.speech-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.speech-stat-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.speech-val {
+    display: block;
+    font-size: 26px;
+    font-weight: 800;
+    color: #0284c7;
+    margin-bottom: 4px;
+}
+
+.speech-lbl {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.speech-summary-text {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.6;
+    background: #f1f5f9;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+/* ================= STAR CHECKLIST ================= */
+.star-subtitle {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 16px;
+}
+
+.star-checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.star-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: white;
+}
+
+.star-step.checked {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.star-step.missing {
+    border-color: #fed7aa;
+    background: #fff7ed;
+}
+
+.star-check-badge {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.star-step.checked .star-check-badge {
+    background: #22c55e;
+    color: white;
+}
+
+.star-step.missing .star-check-badge {
+    background: #f97316;
+    color: white;
+}
+
+.star-step strong {
+    font-size: 13px;
+    color: #0f172a;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.star-step p {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.3;
+}
+
+.star-feedback-box {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #1e40af;
+}
+
+/* ================= REWRITE ENGINE ================= */
+.rewrite-intro {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
+
+.rewrite-badge {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid #bfdbfe;
+}
+
+.rewrite-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.rewrite-side {
+    border-radius: 12px;
+    padding: 18px;
+    border: 1.5px solid #e2e8f0;
+}
+
+.rewrite-side.candidate-original {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.rewrite-side.ai-model {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.rewrite-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.side-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #991b1b;
+}
+
+.model-label {
+    color: #166534;
+}
+
+.critique-tag {
+    font-size: 11px;
+    font-weight: 700;
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.model-tag {
+    font-size: 11px;
+    font-weight: 700;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.rewrite-question-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.rewrite-box {
+    background: white;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    border: 1px solid #f1f5f9;
+    white-space: pre-line;
+}
+
+.model-box {
+    border-color: #dcfce7;
+    color: #14532d;
+    font-weight: 500;
+}
+
+.rewrite-critique-note {
+    font-size: 12px;
+    color: #991b1b;
+    background: #fee2e2;
+    padding: 8px 12px;
+    border-radius: 6px;
+    line-height: 1.4;
+}
+
 @media (max-width: 768px) {
     .scorecard-grid,
     .categories-grid,
     .feedback-grid,
-    .jd-skills-comparison {
+    .jd-skills-comparison,
+    .speech-metrics-grid,
+    .rewrite-comparison-grid {
         grid-template-columns: 1fr;
     }
 }

@@ -44,6 +44,15 @@
                 </div>
             </div>
 
+            <!-- Diagnostic Fallback Banner -->
+            <div id="diagnosticBanner" class="diagnostic-banner" style="display: none;">
+                <span class="diagnostic-icon">⚠️</span>
+                <div>
+                    <strong>Heuristic / Diagnostic Estimate</strong>
+                    <p id="diagnosticBannerMsg">AI evaluation service could not be reached. Local heuristic evaluation applied.</p>
+                </div>
+            </div>
+
             <!-- Scorecard Hero -->
             <div class="scorecard-grid">
                 <!-- Circular Score -->
@@ -152,6 +161,100 @@
                     <ul id="improvementsList">
                         <li>Incorporate specific quantifiable achievements in project explanations</li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- Speech Delivery Analytics -->
+            <div class="section-card" id="speechDeliveryCard">
+                <div class="card-header-row">
+                    <h2>🎙️ Verbal Delivery &amp; Speech Analytics</h2>
+                    <span class="delivery-status-pill" id="deliveryPacingPill">Optimal Cadence</span>
+                </div>
+                <div class="speech-metrics-grid">
+                    <div class="speech-stat-box">
+                        <span class="speech-val" id="speechAvgWpm">--</span>
+                        <span class="speech-lbl">Avg Words / Min (WPM)</span>
+                    </div>
+                    <div class="speech-stat-box">
+                        <span class="speech-val" id="speechFillerCount">0</span>
+                        <span class="speech-lbl">Filler Words Detected</span>
+                    </div>
+                    <div class="speech-stat-box">
+                        <span class="speech-val" id="speechClarityScore">Optimal</span>
+                        <span class="speech-lbl">Pacing Assessment</span>
+                    </div>
+                </div>
+                <p class="speech-summary-text" id="speechDeliverySummaryText">
+                    Tracking speaking pacing, filler word rate, and verbal clarity across all question responses.
+                </p>
+            </div>
+
+            <!-- STAR Method Structural Validation -->
+            <div class="section-card" id="starBreakdownCard">
+                <h2>⭐ STAR Method Structural Assessment</h2>
+                <p class="star-subtitle">Recruiter rubric assessing structured answer delivery (Situation, Task, Action, Result):</p>
+                <div class="star-checklist-grid">
+                    <div class="star-step checked" id="starSituationStep">
+                        <span class="star-check-badge" id="starSituationCheck">✓</span>
+                        <div>
+                            <strong>[S] Situation</strong>
+                            <p>Context &amp; project backdrop established</p>
+                        </div>
+                    </div>
+                    <div class="star-step checked" id="starTaskStep">
+                        <span class="star-check-badge" id="starTaskCheck">✓</span>
+                        <div>
+                            <strong>[T] Task</strong>
+                            <p>Specific responsibility defined</p>
+                        </div>
+                    </div>
+                    <div class="star-step checked" id="starActionStep">
+                        <span class="star-check-badge" id="starActionCheck">✓</span>
+                        <div>
+                            <strong>[A] Action</strong>
+                            <p>Concrete engineering steps executed</p>
+                        </div>
+                    </div>
+                    <div class="star-step checked" id="starResultStep">
+                        <span class="star-check-badge" id="starResultCheck">✓</span>
+                        <div>
+                            <strong>[R] Result</strong>
+                            <p>Measurable impact &amp; outcomes achieved</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="star-feedback-box" id="starFeedbackBox">
+                    <strong>STAR Coaching Notes:</strong>
+                    <span id="starFeedbackText">Solid use of the STAR framework across responses.</span>
+                </div>
+            </div>
+
+            <!-- Recruiter Model Answer Rewrite Engine -->
+            <div class="section-card" id="answerRewriteCard">
+                <div class="card-header-row">
+                    <h2>✨ Recruiter Answer Rewrite Engine</h2>
+                    <span class="rewrite-badge">STAR Growth Blueprint</span>
+                </div>
+                <p class="rewrite-intro">
+                    IntervAI identified your single weakest response in this session and rebuilt it into an optimized, recruiter-ready alternative preserving your actual project context:
+                </p>
+                <div class="rewrite-comparison-grid">
+                    <div class="rewrite-side candidate-original">
+                        <div class="rewrite-label-row">
+                            <span class="side-label">Candidate Original Response</span>
+                            <span class="critique-tag" id="rewriteCritiqueTag">Needs Structure</span>
+                        </div>
+                        <div class="rewrite-question-title" id="rewriteQuestionText">Target Question</div>
+                        <div class="rewrite-box" id="rewriteOriginalAnswer">Candidate answer...</div>
+                        <div class="rewrite-critique-note" id="rewriteCritiqueNote">Critique...</div>
+                    </div>
+                    <div class="rewrite-side ai-model">
+                        <div class="rewrite-label-row">
+                            <span class="side-label model-label">Recruiter-Ready Model Answer (STAR)</span>
+                            <span class="model-tag">Optimized Structure</span>
+                        </div>
+                        <div class="rewrite-box model-box" id="rewriteModelAnswer">Model answer...</div>
+                    </div>
                 </div>
             </div>
 

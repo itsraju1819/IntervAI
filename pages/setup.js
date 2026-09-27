@@ -22,17 +22,14 @@ const matchedSkillsList = document.getElementById("matchedSkillsList");
 const missingSkillsList = document.getElementById("missingSkillsList");
 const enableHintsCheck = document.getElementById("enableHintsCheck");
 
-// AI Status & Key Elements
+// AI Status Elements
 const aiStatusDot = document.getElementById("aiStatusDot");
 const aiStatusTitle = document.getElementById("aiStatusTitle");
-const toggleApiKeyBtn = document.getElementById("toggleApiKeyBtn");
-const apiKeySection = document.getElementById("apiKeySection");
-const geminiApiKeyInput = document.getElementById("geminiApiKeyInput");
-const saveApiKeyBtn = document.getElementById("saveApiKeyBtn");
-const apiKeyMsg = document.getElementById("apiKeyMsg");
+const aiStatusBadge = document.getElementById("aiStatusBadge");
 
 let uploadedResumeSummary = null;
 let uploadedResumeSkills = [];
+let uploadedCandidateProfile = null;
 let jdDebounceTimer = null;
 
 // ========================================
@@ -148,7 +145,7 @@ function renderJdMatch(data) {
 }
 
 // ========================================
-// AI STATUS & API KEY MANAGEMENT
+// AI STATUS MONITORING
 // ========================================
 
 async function checkAIStatus() {
@@ -159,67 +156,28 @@ async function checkAIStatus() {
         if (data.gemini_configured) {
             if (aiStatusDot) aiStatusDot.style.background = "#10b981";
             if (aiStatusTitle) aiStatusTitle.textContent = `AI Engine: Gemini Active (${data.gemini_model})`;
-            if (toggleApiKeyBtn) toggleApiKeyBtn.textContent = "Change Gemini Key";
+            if (aiStatusBadge) {
+                aiStatusBadge.textContent = "Production Gemini Engine";
+                aiStatusBadge.className = "pill-matched";
+            }
         } else {
             if (aiStatusDot) aiStatusDot.style.background = "#f59e0b";
-            if (aiStatusTitle) aiStatusTitle.textContent = "AI Engine: Standard Mode (Role Bank Active)";
-            if (toggleApiKeyBtn) toggleApiKeyBtn.textContent = "Add Gemini Key";
+            if (aiStatusTitle) aiStatusTitle.textContent = "AI Engine: Standard Fallback (Server .env unconfigured)";
+            if (aiStatusBadge) {
+                aiStatusBadge.textContent = "Offline Heuristic Mode";
+                aiStatusBadge.className = "pill-missing";
+            }
         }
     } catch {
         if (aiStatusDot) aiStatusDot.style.background = "#94a3b8";
-        if (aiStatusTitle) aiStatusTitle.textContent = "AI Engine: Offline Mode (Local Bank Active)";
+        if (aiStatusTitle) aiStatusTitle.textContent = "AI Engine: Server Offline (Local Fallback Active)";
+        if (aiStatusBadge) {
+            aiStatusBadge.textContent = "Local Standalone";
+            aiStatusBadge.className = "pill-missing";
+        }
     }
 }
 checkAIStatus();
-
-if (toggleApiKeyBtn) {
-    toggleApiKeyBtn.addEventListener("click", () => {
-        if (!apiKeySection) return;
-        apiKeySection.style.display = apiKeySection.style.display === "none" ? "block" : "none";
-    });
-}
-
-if (saveApiKeyBtn) {
-    saveApiKeyBtn.addEventListener("click", async () => {
-        const key = (geminiApiKeyInput.value || "").trim();
-        if (!key) {
-            apiKeyMsg.style.color = "#ef4444";
-            apiKeyMsg.textContent = "Please enter an API key.";
-            return;
-        }
-
-        saveApiKeyBtn.disabled = true;
-        saveApiKeyBtn.textContent = "Verifying...";
-        apiKeyMsg.style.color = "#64748b";
-        apiKeyMsg.textContent = "Connecting to Gemini...";
-
-        try {
-            const res = await fetch(`${INTERVAI_API_BASE_URL}/api/interview/config/key`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ api_key: key }),
-            });
-            const data = await res.json();
-            if (res.ok) {
-                apiKeyMsg.style.color = "#10b981";
-                apiKeyMsg.textContent = "✓ Key saved! Gemini AI is now active.";
-                geminiApiKeyInput.value = "";
-                await checkAIStatus();
-                setTimeout(() => {
-                    apiKeySection.style.display = "none";
-                }, 2000);
-            } else {
-                throw new Error(data.detail || "Failed to save key");
-            }
-        } catch (err) {
-            apiKeyMsg.style.color = "#ef4444";
-            apiKeyMsg.textContent = `Error: ${err.message}`;
-        } finally {
-            saveApiKeyBtn.disabled = false;
-            saveApiKeyBtn.textContent = "Save Key";
-        }
-    });
-}
 
 // ===============================
 // TRACK & DIFFICULTY SELECTION
@@ -328,12 +286,17 @@ async function handleFileSelection(file) {
             const resData = await response.json();
             uploadedResumeSummary = resData.summary;
             uploadedResumeSkills = resData.skills || [];
+            uploadedCandidateProfile = resData.candidate_profile || null;
             sessionStorage.setItem("intervaiResumeSummary", resData.summary);
             sessionStorage.setItem("intervaiResumeSkills", JSON.stringify(resData.skills));
+            if (resData.candidate_profile) {
+                sessionStorage.setItem("intervaiCandidateProfile", JSON.stringify(resData.candidate_profile));
+            }
 
             const skillHighlights = (resData.skills || []).slice(0, 5).join(", ");
-            uploadText.textContent = skillHighlights ? `Detected skills: ${skillHighlights}` : "Resume analyzed successfully";
-            fileSelected.textContent = `✓ ${file.name} analyzed (${resData.skills.length} skills found)`;
+            const projCount = (resData.candidate_profile && resData.candidate_profile.key_projects) ? resData.candidate_profile.key_projects.length : 0;
+            uploadText.textContent = skillHighlights ? `Stack: ${skillHighlights} (${projCount} projects indexed)` : "Resume analyzed successfully";
+            fileSelected.textContent = `✓ ${file.name} structured (${resData.skills.length} skills & claims extracted)`;
 
             // Re-trigger JD analysis if JD text is already filled
             if (jobDescriptionInput.value.trim()) {
@@ -426,6 +389,12 @@ setupForm.addEventListener("submit", async function (event) {
     startInterviewBtn.textContent = "Setting up interview & tailoring questions...";
 
     const resumeSummary = uploadedResumeSummary || sessionStorage.getItem("intervaiResumeSummary") || null;
+    let candidateProfile = uploadedCandidateProfile;
+    if (!candidateProfile && sessionStorage.getItem("intervaiCandidateProfile")) {
+        try {
+            candidateProfile = JSON.parse(sessionStorage.getItem("intervaiCandidateProfile"));
+        } catch {}
+    }
 
     try {
         const response = await fetch(
@@ -439,6 +408,7 @@ setupForm.addEventListener("submit", async function (event) {
                     difficulty: difficulty,
                     resume_summary: resumeSummary,
                     job_description: jobDescription || null,
+                    candidate_profile: candidateProfile || null,
                 }),
             }
         );
@@ -460,6 +430,9 @@ setupForm.addEventListener("submit", async function (event) {
         sessionStorage.setItem("intervaiDifficulty", data.difficulty);
         sessionStorage.setItem("intervaiFirstQuestion", JSON.stringify(data.question));
         sessionStorage.setItem("intervaiQuestionSource", data.source);
+        sessionStorage.setItem("intervaiTotalQuestions", data.total_questions || 5);
+        sessionStorage.setItem("intervaiCurrentTopic", data.current_topic || data.question.topic || "");
+        sessionStorage.setItem("intervaiTopicsRemaining", JSON.stringify(data.topics_remaining || []));
 
         window.location.href = "interview.html";
     } catch (error) {
